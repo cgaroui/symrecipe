@@ -11,9 +11,15 @@
     </div>
     {% endfor %}    
 
-    {% if not ingredients.items is same as [ ] %}
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% if not ingredients.items is same as []  %}
         
-    
+    <a href="{{path('ingredient_new')}}" class="btn btn-primary">Créer un ingrédient</a>
     <h1>Mes ingrédients </h1>
 
 {# Nombre total d'items  #}
@@ -30,6 +36,8 @@
             <th scope="col">Nom</th>
             <th scope="col">Prix</th>
             <th scope="col">Date de création</th>
+            <th scope="col">editer</th>
+            <th scope="col">Supprimer</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +48,12 @@
             <td>{{ingredient.nom}}</td>
             <td>{{ingredient.price}}</td>
             <td>{{ingredient.createddate |date("d/m/y")}}</td>
+            <td>
+                <a href="{{path('ingredient_edit', {id : ingredient.id})}}" class="btn btn-info">Modifier</a>
+            </td>
+            <td>
+                <a href="{{path('ingredient_delete', {id : ingredient.id})}}" class="btn btn-warning">Supprimer</a>
+            </td>
           </tr>
           {% endfor %}
 
