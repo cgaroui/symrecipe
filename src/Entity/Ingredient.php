@@ -6,9 +6,11 @@ use App\Repository\IngredientRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
+#[UniqueEntity('nom')] //pour pas avoir 2 ingrédient avec e meme nom
 class Ingredient
 {
     #[ORM\Id]

@@ -5,51 +5,56 @@ namespace App\Controller;
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IngredientController extends AbstractController
 {
-
-
     /**
+     * Cette fonction affiche tous les ingrédients
      * 
-     *cette fonction affiche tout les ingredients 
-
      * @param IngredientRepository $repository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
      */
-
-
     #[Route('/ingredient', name: 'app_ingredient')]
-    public function index(IngredientRepository $repository, PaginatorInterface $paginator,  Request $request): Response
+    public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
-
         $ingredients = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit par page*/
         );
-      
 
         return $this->render('pages/ingredient/index.html.twig', [
-                'ingredients' => $ingredients
+            'ingredients' => $ingredients
         ]);
     }
 
-    #[Route('/ingredient/nouveau', 'ingredient.new' , methods: ['GET', 'POST'] )]
-    public function new(): Response
+    #[Route('/ingredient/nouveau', name: 'ingredient.new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $ingredient = new Ingredient();
-        $form = $this->createform(IngredientType::class, $ingredient);
+        $form = $this->createForm(IngredientType::class, $ingredient);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($ingredient);
+            $manager->flush();
+
+            $this->addFlash('success', 'Votre ingrédient a bien été créé !');
+
+            // Redirection après le succès
+            return $this->redirectToRoute('app_ingredient');
+        }
 
         return $this->render('pages/ingredient/new.html.twig', [
-            'form' => $form->createview()
-            ]);
+            'form' => $form->createView()
+        ]);
     }
 }
