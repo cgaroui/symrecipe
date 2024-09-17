@@ -20,7 +20,7 @@ class IngredientType extends AbstractType
             ->add('nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control' ,
-                    'minlenght' => '2',
+                    'minlength' => '2',
                     'maxlength' => '50'
 
                 ],

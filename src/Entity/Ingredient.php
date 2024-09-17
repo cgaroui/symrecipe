@@ -26,6 +26,7 @@ class Ingredient
     #[ORM\Column]
     #[Assert\NotBlank()]
     #[Assert\Positive()]
+    #[Assert\LessThan(200)]
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
