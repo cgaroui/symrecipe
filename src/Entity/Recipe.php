@@ -48,9 +48,11 @@ class Recipe
     private ?bool $isFavorite = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
