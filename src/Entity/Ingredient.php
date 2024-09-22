@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 #[UniqueEntity('nom')] //pour pas avoir 2 ingrédient avec e meme nom
+#[ORM\HasLifecycleCallbacks] // pour lui preciser qu'il a un cycle de vie (obligatoire puisqu'on a utiliser prepersist)
 class Ingredient
 {
     #[ORM\Id]
