@@ -49,6 +49,7 @@ class Recipe
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
@@ -67,8 +68,9 @@ class Recipe
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
-
     
+
+
     #[ORM\PrePersist]
     public function setUpdatedAtValue()
     {
