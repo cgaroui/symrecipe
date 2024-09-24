@@ -12,23 +12,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class RecipeController extends AbstractController
 {
     #[Route('/recette', name: 'app_recipe')]
     public function index(RecipeRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
+        
         $recipes = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit par page*/
         );
-
+    
         return $this->render('pages/recipe/index.html.twig', [
             'recipes' => $recipes,
         ]);
     }
 
-    #[Route('/recette/creation', 'recipe_new', methods: ['GET', 'POST'])]
+    #[Route('/recette/nouveau', 'recipe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $recipe = new Recipe();
@@ -36,8 +38,8 @@ class RecipeController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipe = $form->getData();
-            $recipe->setUser($this->getUser());
+            // $recipe = $form->getData();
+            // $recipe->setUser($this->getUser());
 
             $manager->persist($recipe);
             $manager->flush();
