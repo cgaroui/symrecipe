@@ -2,12 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Ingredient;
 use App\Entity\Recipe;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RecipeType extends AbstractType
 {
@@ -32,6 +33,9 @@ class RecipeType extends AbstractType
                 'choice_label' => 'id',
                 'multiple' => true,
             ])
+
+            ->add('save', SubmitType::class, ['label' => 'Créer la recette']) 
+    
         ;
     }
 
